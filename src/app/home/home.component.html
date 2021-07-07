@@ -1,0 +1,138 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet" />
+
+
+<div class="container">
+    <h3 class=" text-center">WELCOME <b>{{username}}</b></h3>
+    <div class="messaging">
+        <div class="inbox_msg">
+            <div class="inbox_people">
+                <div class="headind_srch">
+                    <div class="channel_heading">
+                        <h4>Friends</h4>
+                    </div>
+                </div>
+                <div class="inbox_chat">
+                    <div class="channels">
+                        <div class="chat_list">
+                            <div class="chat_people">
+                                <div class="chat_ib">
+
+                                    <div class="frnds">
+                                        <input type="text" [(ngModel)]="frnd.name" name="name" placeholder="search user">
+                                        <br>
+                                        <button (click)="frndata()" type="sumbit">Search</button>
+                                    </div>
+                                    <br>
+                                    <div class="chat">
+                                        <div class="div" (click)="frndata()">{{frnds.name}}</div>
+                                    </div>
+                                    <h2>ALL Users</h2>
+                                    <div class="chat">
+                                        <!-- <div class="div" (click)="frndchat(allfrnd)" *ngFor="let allfrnd of allfrnds">{{allfrnd.name}}</div> -->
+                                        <p class="username" (click)="frndchat(allfrnd)" *ngFor="let allfrnd of allfrnds">{{allfrnd.name}}</p>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+            <div class="rightsid" *ngIf="!showcontent" style="background-color: aquamarine;">
+                <div class="mainContent">
+                    <h1>WELCOME</h1>
+                </div>
+            </div>
+            <!-- right side -->
+            <div class="rightsid" *ngIf="showcontent" style="background-color: blueviolet;">
+                <h4>{{selectedUser}}</h4>
+
+
+
+
+
+
+                <!-- <div class="chat-messages">
+                    <div class="message">
+                        <div *ngFor="let recmsg of recmsgs">
+                            {{recmsg.msg}}
+                        </div>
+                    </div>
+                    <div class="message">
+                        <span class="timestamp" style="float: left;">
+                                            sendertime
+                                        </span>
+                        <div class="messageContent" style="float: left; ">
+                            sender
+                        </div>
+                    </div>
+                </div> - -->
+
+                <div class="chat-body">
+                    <div class="message">
+
+                        <div style="float: right;">
+                            <p *ngFor="let recmsg of recmsgs" class="message-container ">
+                                {{selectedUser}}
+                                <br> {{recmsg.msg}}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="float: left; margin-top: 5%;">
+
+
+                        <div *ngFor="let i of msgarraysstore ">
+
+                            <div *ngIf="i.from== tomsg.to" class=" message-container ">{{i.msg}}</div>
+
+                            <!-- <div *ngIf="i.from== tomsg.to;then content else other_content"></div>
+                            <ng-template #content>{{i.msg}}</ng-template>
+                            <ng-template #other_content></ng-template> -->
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- <div class="chat-form-container ">
+                    <form id="chat-form ">
+                        <input class="chatInput " (keydown)="Mgstype($event) " [(ngModel)]="msg " name="msgbox " rows="4 " cols="50 " />
+                        <button class="chatButton " type="submit " (click)=send()><i class="fas fa-paper-plane "></i> Send</button>
+                    </form>
+                </div> -->
+
+
+                <div class="chat-footer ">
+
+                    <div class="row ">
+                        <div class="col-md-10 ">
+                            <div class="form-group mb-0 ">
+                                <input class="chatInput " (keydown)="Mgstype($event) " [(ngModel)]="msg " name="msgbox " width="100px " />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 text-center align-self-center ">
+                            <button class="chatButton " type="submit " (click)=send()>Send</button>
+
+                        </div>
+                    </div>
+
+
+                    <!-- <button class="chatButton " (click)=send()>Send</button> -->
+                    <!-- </div>
+
+
+        </div>
+    </div>
+</div>
+
+ -->
