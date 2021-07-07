@@ -113,10 +113,10 @@ count: number = 0
       console.log(this.prvmsg[i])
      
      
-      this.msgarraysstore.push(this.prvmsg[i] )
+      // this.msgarraysstore.push(this.prvmsg[i] )   // change aaki coz displaying 2 times
       if(this.prvmsg[i] != null){
         this.msgstore.push(this.prvmsg[i])
-        this.websocket.recmsg(this.prvmsg[i])
+        this.websocket.recmsg(this.prvmsg[i]) // it would display prevmsgs coz when it comes it gets saved in backend and then display chiyum whwn clicked on username
 
       }
   }
@@ -132,14 +132,15 @@ count: number = 0
 
   this.websocket.getmsg().subscribe((data:any)=>{
     this.msgkittis = data
-    
     this.websocket.recmsg(this.msgkittis)
+  
     console.log(this.msgkittis)
     this.webscoketmsg= this.msgkittis.msg
     this.websocketfrom= this.msgkittis.from
     this.websockettos =this.msgkittis.to
     console.log(this.websocketfrom)
     this.msgarraysstore.push({"msg" : this.webscoketmsg , "from" : this.websocketfrom, "to" : this.websockettos} )
+    
     console.log(this.webscoketmsg + "msg")
     console.log(this.msgarraysstore)
    
@@ -203,7 +204,7 @@ data2:any
     this.msgarraysstore.push(this.data2[i] )
    }
  
-}) 
+}) // displaying rec msg
 
 if(this.count%2 ==0){
 this.msgarraysstore.splice(0, this.msgarraysstore.length)

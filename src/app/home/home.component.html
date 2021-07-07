@@ -59,39 +59,26 @@
 
 
 
-                <!-- <div class="chat-messages">
-                    <div class="message">
-                        <div *ngFor="let recmsg of recmsgs">
-                            {{recmsg.msg}}
-                        </div>
-                    </div>
-                    <div class="message">
-                        <span class="timestamp" style="float: left;">
-                                            sendertime
-                                        </span>
-                        <div class="messageContent" style="float: left; ">
-                            sender
-                        </div>
-                    </div>
-                </div> - -->
+
 
                 <div class="chat-body">
-                    <div class="message">
 
-                        <div style="float: right;">
-                            <p *ngFor="let recmsg of recmsgs" class="message-container ">
-                                {{selectedUser}}
-                                <br> {{recmsg.msg}}
-                            </p>
-                        </div>
+
+                    <div style="float: right;">
+                        <p *ngFor="let recmsg of recmsgs" class="message-container ">
+
+                            {{recmsg.msg}}
+                        </p>
                     </div>
 
-                    <div style="float: left; margin-top: 5%;">
+
+
+                    <div style="float: left; margin-top: 10%;">
 
 
                         <div *ngFor="let i of msgarraysstore ">
 
-                            <div *ngIf="i.from== tomsg.to" class=" message-container ">{{i.msg}}</div>
+                            <div *ngIf="i.from== tomsg.to" class=" message-container3">{{i.msg}}</div>
 
                             <!-- <div *ngIf="i.from== tomsg.to;then content else other_content"></div>
                             <ng-template #content>{{i.msg}}</ng-template>
@@ -103,12 +90,7 @@
                 </div>
 
 
-                <!-- <div class="chat-form-container ">
-                    <form id="chat-form ">
-                        <input class="chatInput " (keydown)="Mgstype($event) " [(ngModel)]="msg " name="msgbox " rows="4 " cols="50 " />
-                        <button class="chatButton " type="submit " (click)=send()><i class="fas fa-paper-plane "></i> Send</button>
-                    </form>
-                </div> -->
+
 
 
                 <div class="chat-footer ">
@@ -127,12 +109,8 @@
                     </div>
 
 
-                    <!-- <button class="chatButton " (click)=send()>Send</button> -->
-                    <!-- </div>
-
-
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
- -->
