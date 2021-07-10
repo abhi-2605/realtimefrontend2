@@ -5,6 +5,7 @@ import{WebsocketService} from '../websocket.service'
 // import  io from 'socket.io-client';
 import { JsonPipe } from '@angular/common';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -75,11 +76,18 @@ prvmsg=[{
 prvms=""
 prvmsto=""
 count: number = 0
+blockmsg={
+  msg:''
+}
+tempmsg=''
+name={
+  name:''
+}
   constructor(private dataservice:DataService , private router:Router, private websocket:WebsocketService) {
   
    }
    showcontent: Boolean = true;
-   
+   isShow :any
   ngOnInit(): void {
     let id= localStorage.getItem("token")
     this.dataservice.getUserName(id).subscribe((data)=>{
@@ -92,13 +100,17 @@ count: number = 0
      this.allfrnds =JSON.parse(JSON.stringify(data))
 
    })
- 
+   this.dataservice.name(this.username).subscribe((data)=>{
+    this.name=JSON.parse(JSON.stringify(data))
+    })
+
+    
   })
 
 
 
   this.showcontent = this.showcontent ? false : true
-
+this.isShow = false
  
   this.websocket.prvmsg(this.username).subscribe((data:any)=>{
     this.prvmsg= data
@@ -147,6 +159,8 @@ count: number = 0
 
   })
 
+  
+  
   }
 
 
@@ -179,8 +193,10 @@ recmsgs={
   msg:''
 }
 data2:any
+// isShow = false;
 
   frndchat(allfrnd:any){// when clicked on specific user a conversation db is formed with that specific user s id and senders s id 
+    this.blockmsg.msg=""
     this.count++
     this.members.receiverId = allfrnd._id
     this.tomsg.to = allfrnd._id
@@ -203,7 +219,14 @@ data2:any
    
     this.msgarraysstore.push(this.data2[i] )
    }
- 
+   if (this.blockmsg.msg =="blocked"){
+    this.isShow= this.isShow 
+    this.isShow = true
+    
+   }
+   else{
+     this.isShow=false
+   }
 }) // displaying rec msg
 
 if(this.count%2 ==0){
@@ -221,15 +244,20 @@ this.msgarraysstore.splice(0, this.msgarraysstore.length)
     this.showcontent = this.showcontent ? true: true
     // this.dismsg(allfrnd._id , this.username)
 
-     
-    
+    this.websocket.blocklive({'block':allfrnd._id, 'by':this.username})
+
+    this.websocket.blockmsg().subscribe((data:any)=>{
+      console.log(data)
+      this.blockmsg.msg = data
+    })
+   
       
 }
 // after entering the data and hitting the sumbit then only send msg would be displayed
 Mgstype(event: { key: string; }){
     
 
-  if (event.key=="Enter"){
+  if (event.key=="Enter" && this.blockmsg.msg ==""){
     this.send()
       
   }
@@ -254,7 +282,9 @@ this.websocket.sendmsg(this.sendmsg) // sending data to websocket
     this.disp() // to display msg after sending it 
   
   })
-  
+  this.check()
+
+ 
  
 }
 recmsgstatus={
@@ -281,6 +311,31 @@ disp(){
   })
 }
 
+
+  
+
+blockuser(){
+  this.websocket.blockuser({"blockeduser" : this.tomsg.to , 'blockedby' :this.username})
+  console.log('suc')
+  
+  
+}
+check(){
+this.websocket.checkblock({"blockeduser" : this.tomsg.to , 'blockedby' :this.username})
+    console.log('checked')
+}
+
+unblockuser(){
+  console.log("suc")
+  this.blockmsg.msg =""
+  this.isShow=false
+  this.websocket.del({"blockeduser": this.tomsg.to , "by" : this.username})
+}
+
+// prevent(event:any){
+//   event.preventDefault();
+//  }
+
 }
 // console.log("herer")
 // let msg :any   = this.msgkittis.filter(x => x.includes(this.tommsg))
@@ -296,3 +351,9 @@ disp(){
 //  this.msgarraysstore.splice(0, this.msgarraysstore.length)
 //  console.log("no push")
 // }
+
+
+// this.websocket.blockmsg().subscribe((data:any)=>{
+//   console.log(data)
+//   this.blockmsg.msg= data
+// })

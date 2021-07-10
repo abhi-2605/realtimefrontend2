@@ -3,13 +3,13 @@
 
 
 <div class="container">
-    <h3 class=" text-center">WELCOME <b>{{username}}</b></h3>
+    <h3 class=" text-center" style="text-align: center; font-size: x-large; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: 1000; color: rgb(83, 83, 212)">WELCOME <b>{{name.name}}</b></h3>
     <div class="messaging">
         <div class="inbox_msg">
             <div class="inbox_people">
-                <div class="headind_srch">
+                <div class="headind_srch" style="background-color:  #646D6D">
                     <div class="channel_heading">
-                        <h4>Friends</h4>
+                        <h4 style="color: white;">Friends</h4>
                     </div>
                 </div>
                 <div class="inbox_chat">
@@ -19,9 +19,10 @@
                                 <div class="chat_ib">
 
                                     <div class="frnds">
-                                        <input type="text" [(ngModel)]="frnd.name" name="name" placeholder="search user">
+                                        <input type="text" [(ngModel)]="frnd.name" style="text-align: center;" class="srch2" name="name" placeholder="search user">
                                         <br>
-                                        <button (click)="frndata()" type="sumbit">Search</button>
+                                        <br>
+                                        <button class="sear" (click)="frndata()" type="button">Search</button>
                                     </div>
                                     <br>
                                     <div class="chat">
@@ -30,7 +31,7 @@
                                     <h2>ALL Users</h2>
                                     <div class="chat">
                                         <!-- <div class="div" (click)="frndchat(allfrnd)" *ngFor="let allfrnd of allfrnds">{{allfrnd.name}}</div> -->
-                                        <p class="username" (click)="frndchat(allfrnd)" *ngFor="let allfrnd of allfrnds">{{allfrnd.name}}</p>
+                                        <p class="username" style="text-align: center; font-size: medium; font-family: cursive; font-weight: 600; color: white" (click)="frndchat(allfrnd)" *ngFor="let allfrnd of allfrnds">{{allfrnd.name}}</p>
                                     </div>
 
 
@@ -45,17 +46,22 @@
 
 
 
-            <div class="rightsid" *ngIf="!showcontent" style="background-color: aquamarine;">
+            <div class="rightsid" *ngIf="!showcontent" style="background-color:  #646D6D">
                 <div class="mainContent">
-                    <h1>WELCOME</h1>
+                    <h1 style="text-align: center; font-size: x-large; font-family: cursive; font-weight: 1000; color: white">WELCOME to cHatME!</h1>
+
+
+                    <h3 style="text-align: center; padding: 10%; margin-top: 30%; font-size: xx-large; opacity: .2; color: white; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-weight: 700;">
+                        Select users to start chatting
+                    </h3>
                 </div>
             </div>
             <!-- right side -->
-            <div class="rightsid" *ngIf="showcontent" style="background-color: blueviolet;">
-                <h4>{{selectedUser}}</h4>
+            <div class="rightsid" *ngIf="showcontent" style="background-color: #1F2525">
+                <h3 style="text-align: center;  font-size: x-large; font-family: cursive; font-weight: 1000; color: white">{{selectedUser}}</h3>
+                <button type="button" *ngIf="!isShow" (click)='blockuser()' class="block" style="float: right;">Block</button>
 
-
-
+                <button type="button" *ngIf="isShow" (click)="unblockuser()" class="block2" style="float: left;">Unblock</button>
 
 
 
@@ -93,17 +99,18 @@
 
 
 
-                <div class="chat-footer ">
+                <div class="chat-footer " style="background-color: #1F2525;">
 
                     <div class="row ">
                         <div class="col-md-10 ">
                             <div class="form-group mb-0 ">
-                                <input class="chatInput " (keydown)="Mgstype($event) " [(ngModel)]="msg " name="msgbox " width="100px " />
+                                <input class="chatInput" (keydown)="Mgstype($event) " [(ngModel)]="msg " name="msgbox " width="100px " />
                             </div>
                         </div>
 
                         <div class="col-md-2 text-center align-self-center ">
-                            <button class="chatButton " type="submit " (click)=send()>Send</button>
+
+                            <button class="msg_send_btn " [disabled]="blockmsg.msg" type="button" (click)=send()>Send</button>
 
                         </div>
                     </div>

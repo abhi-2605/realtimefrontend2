@@ -6,6 +6,7 @@ import { HttpClient, HttpParams } from  '@angular/common/http';
   providedIn: 'root'
 })
 export class WebsocketService {
+  
   private socket:Socket
 
   // readonly url:string="http://localhost:3333"
@@ -68,6 +69,34 @@ sendmsg(data:any){ // to send msg
 recmsg(data:any){ 
   this.socket.emit("recmsg" , data)
   
+}
+blockuser(data:any){
+this.socket.emit("blockuser", data)
+}
+checkblock(data: any) {
+  this.socket.emit('checkblock', data)
+}
+
+blockmsg(){
+     
+  return new Observable((Subscriber)=>{
+    this.socket.on("block"
+      ,
+      (data)=>{
+        
+      
+      Subscriber.next(data)
+
+    }
+    )
+
+  })
+ }
+blocklive(data:any){
+  this.socket.emit('blocklive' , data)
+}
+del(data:any){
+  this.socket.emit('unblock' , data)
 }
 
 }

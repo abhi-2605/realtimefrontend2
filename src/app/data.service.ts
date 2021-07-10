@@ -59,5 +59,8 @@ getmsg(item:any) {
 getrecmsg(item:any){
   return this.http.post('http://localhost:2222/find',{"data":item})
 }
+name(id:any){
+  return  this.http.get('http://localhost:2222/name/'+id)
+}
 
 }
