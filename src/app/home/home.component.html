@@ -75,7 +75,7 @@
 
 
                     <div style="float: right;">
-                        <p *ngFor="let recmsg of recmsgs" class="message-container ">
+                        <p *ngFor="let recmsg of recmsgs" class="message-container " #scrollMe [scrollTop]="scrollMe.scrollHeight">
 
                             {{recmsg.msg}}
                         </p>

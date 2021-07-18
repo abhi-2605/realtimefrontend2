@@ -405,7 +405,7 @@ this.websocket.sendmsg(this.sendmsg)  // sending data to websocket
   
   })
   
-
+this.msg=""
  
  
 }
