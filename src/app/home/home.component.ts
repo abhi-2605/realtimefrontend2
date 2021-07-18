@@ -5,6 +5,7 @@ import{WebsocketService} from '../websocket.service'
 // import  io from 'socket.io-client';
 import { JsonPipe } from '@angular/common';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import {ToastService} from 'ng-uikit-pro-standard'
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  private socket: any;
+
   
 
 username =''
@@ -83,23 +84,46 @@ tempmsg=''
 name={
   name:''
 }
-  constructor(private dataservice:DataService , private router:Router, private websocket:WebsocketService) {
+  recname={
+    name:''
+  }
+  mutecheck=[{
+    muteduser:'',
+    mutedby:''
+  }]
+ 
+  mutesuc:any
+ 
+  mutearray : string[] = [];
+  mutcnf:any
+mutedmsg1:any ="muted"
+mutedmsg2:any ="unuted"
+  constructor(private dataservice:DataService , private router:Router, private websocket:WebsocketService, private toast: ToastService) {
   
    }
    showcontent: Boolean = true;
    isShow :any
+   unblock:any = "unblock"
+  allfrndata=[{
+    _id:'',
+   
+  }]
+  allfrndata2 :string[] =[]
   ngOnInit(): void {
     let id= localStorage.getItem("token")
+   
     this.dataservice.getUserName(id).subscribe((data)=>{
       this.username=JSON.parse(JSON.stringify(data));
    
     this.websocket.sendweb(this.username)
-      
+      this.websocket.muteusercheck(this.username) // checking muteusers
+    this.websocket.getallfrnds(this.username)
       console.log(this.username)
    this.dataservice.getallfrnds(this.username).subscribe((data)=>{
      this.allfrnds =JSON.parse(JSON.stringify(data))
-
-   })
+ 
+       
+})
    this.dataservice.name(this.username).subscribe((data)=>{
     this.name=JSON.parse(JSON.stringify(data))
     })
@@ -110,7 +134,7 @@ name={
 
 
   this.showcontent = this.showcontent ? false : true
-this.isShow = false
+
  
   this.websocket.prvmsg(this.username).subscribe((data:any)=>{
     this.prvmsg= data
@@ -157,12 +181,90 @@ this.isShow = false
     console.log(this.msgarraysstore)
    
 
-  })
 
+   
+    this.dataservice.name(this.websocketfrom).subscribe((data)=>{
+      this.recname=JSON.parse(JSON.stringify(data));
+    
+      if(this.mutearray.includes(this.websocketfrom)){
+        console.log("suc muted")
+        console.log(this.mutearray)
+        
+       }
+       else{
+         
+         this.toastfun()
+       }
+})
+
+})
+
+this.websocket.mutecheckreply().subscribe((data:any)=>{
+  this.mutecheck = data
   
   
-  }
+  console.log(data)
+  // console.log(this.mutecheck.muteduser)
 
+if(this.mutecheck){
+var arrayLength = this.mutecheck.length;
+      for (var i = 0; i < arrayLength; i++) {
+          // console.log(this.mutecheck[i].muteduser);
+          
+          this.mutearray.push(this.mutecheck[i].muteduser)
+          if(this.allfrndata2.includes(this.mutecheck[i].muteduser)){
+            this.mutcnf=this.mutedmsg2
+           
+          }else{
+            this.mutcnf=this.mutedmsg1
+           
+          }
+         
+          console.log(this.mutearray)
+      }
+
+  // this.mutedusers = result?.muteduser
+  // console.log(result?.muteduser)
+
+}else{
+      console.log("no mute users")
+     
+}
+})
+this.websocket.getallfrnds2().subscribe((data:any)=>{
+  this.allfrndata= data
+
+  if(this.allfrndata){
+    var arrayLength = this.allfrndata.length;
+          for (var i = 0; i < arrayLength; i++) {
+              // console.log(this.mutecheck[i].muteduser);
+            //  console.log(this.allfrndata[i]._id)
+              this.allfrndata2.push(this.allfrndata[i]._id)
+              // console.log(this.allfrndata2)
+             
+            
+          }
+    
+      // this.mutedusers = result?.muteduser
+      // console.log(result?.muteduser)
+    
+    }else{
+          console.log("no mute users")
+         
+    }
+    
+
+
+})
+
+
+
+}
+
+
+toastfun(){
+  this.toast.success(this.recname.name+ "   :-   " +this.msgkittis.msg  )
+}
 
 
 frnds={
@@ -178,7 +280,7 @@ frnds={
 //   console.log(this.websocketto+"werto")
   
 // }
-
+block:any = "block"
   frndata(){
 
     this.dataservice.getfrnds(this.frnd.name).subscribe((data)=>{
@@ -193,19 +295,34 @@ recmsgs={
   msg:''
 }
 data2:any
-// isShow = false;
 
+// isShow = false;
   frndchat(allfrnd:any){// when clicked on specific user a conversation db is formed with that specific user s id and senders s id 
-    this.blockmsg.msg=""
-    this.count++
+ 
+    this.isShow=this.unblock
+    this.count = this.count+1
     this.members.receiverId = allfrnd._id
     this.tomsg.to = allfrnd._id
     this.members.senderId =this.username
   this.checkconv.recid = this.members.receiverId
-
+  this.websocket.blocklive({'block':allfrnd._id, 'by':this.username})
+// this.dataservice.sendid(this.members)
+  this.websocket.blockmsg().subscribe((data:any)=>{
+    console.log(data)
+    this.blockmsg.msg = data
+    if (this.blockmsg.msg =="blocked"){
+ 
+      this.isShow=this.block
+    
+      
+     }
+     
+  })
     // creatiing chatconvo with specific frnds with unique conv id to all frnds praanth aayi 
+
+
    
-   console.log(this.tomsg.to + "to?")
+
    
    
  this.dataservice.getrecmsg({"from":allfrnd._id ,"to": this.username}).subscribe((data)=>{
@@ -219,18 +336,16 @@ data2:any
    
     this.msgarraysstore.push(this.data2[i] )
    }
-   if (this.blockmsg.msg =="blocked"){
-    this.isShow= this.isShow 
-    this.isShow = true
-    
-   }
-   else{
-     this.isShow=false
-   }
+   
 }) // displaying rec msg
 
 if(this.count%2 ==0){
 this.msgarraysstore.splice(0, this.msgarraysstore.length)
+
+
+}else{
+  this.msgarraysstore.splice(0, this.msgarraysstore.length)
+ 
 }
 
  this.checkconv.userid = this.username
@@ -244,21 +359,23 @@ this.msgarraysstore.splice(0, this.msgarraysstore.length)
     this.showcontent = this.showcontent ? true: true
     // this.dismsg(allfrnd._id , this.username)
 
-    this.websocket.blocklive({'block':allfrnd._id, 'by':this.username})
+    // this.websocket.blocklive({'block':allfrnd._id, 'by':this.username})
 
-    this.websocket.blockmsg().subscribe((data:any)=>{
-      console.log(data)
-      this.blockmsg.msg = data
-    })
-   
+    // this.websocket.blockmsg().subscribe((data:any)=>{
+    //   console.log(data)
+    //   this.blockmsg.msg = data
+    // })
+
       
 }
 // after entering the data and hitting the sumbit then only send msg would be displayed
 Mgstype(event: { key: string; }){
     
 
-  if (event.key=="Enter" && this.blockmsg.msg ==""){
+  if (event.key=="Enter" && this.isShow == this.unblock){
+  
     this.send()
+    
       
   }
 }
@@ -269,12 +386,17 @@ sendmsgdetails={ // array for storing user specific details and sending to serve
   from:'',
   msg:''
 }
+blockmsgcheck:any
 
 send(){
 this.sendmsg.from =this.username
 this.sendmsg.msg=this.msg
 this.sendmsg.to =this.checkconv.recid
-this.websocket.sendmsg(this.sendmsg) // sending data to websocket 
+this.check()
+
+
+this.websocket.sendmsg(this.sendmsg)  // sending data to websocket 
+
   this.dataservice.msgdet(this.sendmsg).subscribe((data)=>{
     
     this.sendmsgdetails =JSON.parse(JSON.stringify(data))
@@ -282,7 +404,7 @@ this.websocket.sendmsg(this.sendmsg) // sending data to websocket
     this.disp() // to display msg after sending it 
   
   })
-  this.check()
+  
 
  
  
@@ -306,6 +428,7 @@ disp(){
     
     }else{
     this.recmsgs=JSON.parse(JSON.stringify(data));
+    
     }
     
   })
@@ -316,27 +439,68 @@ disp(){
 
 blockuser(){
   this.websocket.blockuser({"blockeduser" : this.tomsg.to , 'blockedby' :this.username})
-  console.log('suc')
+  
+  this.isShow =this.block
   
   
 }
 check(){
-this.websocket.checkblock({"blockeduser" : this.tomsg.to , 'blockedby' :this.username})
+this.websocket.checkblock({"blockeduser" : this.username , 'blockedby' :this.tomsg.to})
     console.log('checked')
 }
 
 unblockuser(){
   console.log("suc")
   this.blockmsg.msg =""
-  this.isShow=false
+  this.isShow=this.unblock
   this.websocket.del({"blockeduser": this.tomsg.to , "by" : this.username})
 }
+muteid:any
+mute(id:any){
+this.muteid = id._id
+this.websocket.muteuser({"muteduser":this.muteid , "mutedby":this.username})
+}
 
-// prevent(event:any){
-//   event.preventDefault();
-//  }
+unmute(id:any){
+  console.log("called")
+  
+ 
+  
+  for (let i = 0; i < this.mutearray.length; i++) {
+     if ( this.mutearray[i] == id._id) {
+       this.mutearray.splice(i, 1);
+       console.log(this.mutearray)
+     }
+  }
+  this.websocket.delmuteuser({muteduser:id._id , mutedby:this.username })
+    
+  
+  
 
 }
+logout(){
+  localStorage.clear()
+  this.router.navigate([""]);
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // console.log("herer")
 // let msg :any   = this.msgkittis.filter(x => x.includes(this.tommsg))
 // this.msgarraysstore.push(msg)

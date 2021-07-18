@@ -4,6 +4,7 @@
      text-align: center;
      height: 100%;
      border-radius: 9%;
+     width: 100%;
  }
  
  img {
@@ -280,7 +281,7 @@
      border: 1px solid #dfd087;
      border-radius: 10px; */
      position: relative;
-     margin-bottom: 30px;
+     margin-bottom: 20px;
      margin-left: 10%;
      padding: 10px;
      background-color: #f8e896;
@@ -518,4 +519,16 @@
  .sear:hover {
      background-color: #008CBA;
      color: white;
+ }
+ 
+ .list {
+     list-style: none;
+     background: none;
+     margin: 0;
+     padding: 0 0 0 0;
+     position: absolute;
+     top: 60px;
+     height: 80vh;
+     width: 100%;
+     padding-right: 17px;
  }

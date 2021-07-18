@@ -99,6 +99,75 @@ del(data:any){
   this.socket.emit('unblock' , data)
 }
 
+
+blockmsgcheck(){
+     
+  return new Observable((Subscriber)=>{
+    this.socket.on("blockcheck"
+      ,
+      (data)=>{
+        
+      
+      Subscriber.next(data)
+
+    }
+    )
+
+  })
+ }
+ muteuser(data:any){
+  this.socket.emit("muteuser", data)
+  }
+  muteusercheck(data:any){
+    this.socket.emit("muteusercheck", data)
+    }
+
+    
+  
+
+    mutecheckreply(){
+     
+      return new Observable((Subscriber)=>{
+        this.socket.on("mutecheck"
+          ,
+          (data)=>{
+            
+          
+          Subscriber.next(data)
+    
+        }
+        )
+    
+      })
+     }
+
+     getallfrnds(data:any){
+      this.socket.emit("getallfrnds", data)
+      }
+      getallfrnds2(){
+     
+        return new Observable((Subscriber)=>{
+          this.socket.on("allfrnds"
+            ,
+            (data)=>{
+              
+            
+            Subscriber.next(data)
+      
+          }
+          )
+      
+        })
+       }
+
+
+
+       
+delmuteuser(data:any){
+this.socket.emit("muteuserdel", data)
+} 
+      
+
 }
 
 

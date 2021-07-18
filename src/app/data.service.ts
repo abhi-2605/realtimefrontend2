@@ -62,5 +62,9 @@ getrecmsg(item:any){
 name(id:any){
   return  this.http.get('http://localhost:2222/name/'+id)
 }
+loggedin(){
+   
+  return !!localStorage.getItem('token')
+}
 
 }

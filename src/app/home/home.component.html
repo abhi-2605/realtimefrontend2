@@ -1,9 +1,6 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet" />
-
-
 <div class="container">
     <h3 class=" text-center" style="text-align: center; font-size: x-large; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: 1000; color: rgb(83, 83, 212)">WELCOME <b>{{name.name}}</b></h3>
+    <h4> <button type="button" (click)="logout()" class="block" style="float: right;">LOGOUT</button></h4>
     <div class="messaging">
         <div class="inbox_msg">
             <div class="inbox_people">
@@ -29,13 +26,20 @@
                                         <div class="div" (click)="frndata()">{{frnds.name}}</div>
                                     </div>
                                     <h2>ALL Users</h2>
-                                    <div class="chat">
+                                    <div class="chat" (click)="frndchat(allfrnd)" *ngFor="let allfrnd of allfrnds">
                                         <!-- <div class="div" (click)="frndchat(allfrnd)" *ngFor="let allfrnd of allfrnds">{{allfrnd.name}}</div> -->
-                                        <p class="username" style="text-align: center; font-size: medium; font-family: cursive; font-weight: 600; color: white" (click)="frndchat(allfrnd)" *ngFor="let allfrnd of allfrnds">{{allfrnd.name}}</p>
+                                        <div class="username" style="text-align: center; padding: .8%; font-size: medium; font-family: cursive; font-weight: 600; color: white">{{allfrnd.name}}
+
+                                            <button class="btn btn-primary" *ngIf="!mutearray.includes(allfrnd._id)" style="background-color: cadetblue; height: 33px; width: fit-content;" (click)="mute(allfrnd)">Mute</button>
+                                            <button class="btn btn-primary" *ngIf="mutearray.includes(allfrnd._id)" style="background-color: cadetblue; height: 33px; width: fit-content;" (click)="unmute(allfrnd)">Unmute</button>
+
+                                        </div>
+
                                     </div>
 
 
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -59,15 +63,15 @@
             <!-- right side -->
             <div class="rightsid" *ngIf="showcontent" style="background-color: #1F2525">
                 <h3 style="text-align: center;  font-size: x-large; font-family: cursive; font-weight: 1000; color: white">{{selectedUser}}</h3>
-                <button type="button" *ngIf="!isShow" (click)='blockuser()' class="block" style="float: right;">Block</button>
+                <button type="button" *ngIf="isShow==unblock" (click)='blockuser()' class="block" style="float: right;">Block</button>
 
-                <button type="button" *ngIf="isShow" (click)="unblockuser()" class="block2" style="float: left;">Unblock</button>
-
-
+                <button type="button" *ngIf="isShow==block " (click)="unblockuser()" class="block2" style="float: left;">Unblock</button>
 
 
 
-                <div class="chat-body">
+
+
+                <div class="chat-body" #scrollMe [scrollTop]="scrollMe.scrollHeight" style="width: 100%; height: 100;">
 
 
                     <div style="float: right;">
@@ -79,7 +83,7 @@
 
 
 
-                    <div style="float: left; margin-top: 10%;">
+                    <div style="float: left; " #scrollMe [scrollTop]="scrollMe.scrollHeight">
 
 
                         <div *ngFor="let i of msgarraysstore ">
@@ -110,7 +114,7 @@
 
                         <div class="col-md-2 text-center align-self-center ">
 
-                            <button class="msg_send_btn " [disabled]="blockmsg.msg" type="button" (click)=send()>Send</button>
+                            <button class="msg_send_btn " [disabled]="isShow!=unblock" type="button" (click)=send()>Send</button>
 
                         </div>
                     </div>

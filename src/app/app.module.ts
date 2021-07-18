@@ -17,7 +17,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatRippleModule} from '@angular/material/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatBadgeModule} from '@angular/material/badge';
-
+import { ToastModule } from 'ng-uikit-pro-standard';
 
 @NgModule({
   declarations: [
@@ -36,9 +36,19 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatRippleModule,
     MatCardModule,
     MatBadgeModule,
-  
+    // ServiceWorkerModule.register('/ngsw-worker.js', { enabled: true}),
+    ToastModule.forRoot(),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+ 
 })
-export class AppModule { }
+export class AppModule { 
+ 
+}
+declare module "@angular/core" {
+  interface ModuleWithProviders<T = any> {
+      ngModule: Type<T>;
+      providers?: Provider[];
+  }
+}
